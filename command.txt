@@ -1,0 +1,1 @@
+sudo /home/tmsoft12/Android/Sdk/platform-tools/adb start-server
