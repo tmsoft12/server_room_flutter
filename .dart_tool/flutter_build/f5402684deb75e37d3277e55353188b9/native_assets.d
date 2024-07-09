@@ -1,0 +1,1 @@
+ /home/tmsoft12/Documents/server_room_flutter/.dart_tool/flutter_build/f5402684deb75e37d3277e55353188b9/native_assets.yaml: 
