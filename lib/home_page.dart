@@ -19,6 +19,8 @@ class _HomePageState extends State<HomePage> {
   String? tempStatus = 'Yükleniyor';
   String? humStatus = 'Yükleniyor';
   bool isConnected = false;
+  String _serverIP = '192.168.100.191';
+  String _serverPort = '3000';
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -27,13 +29,22 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     initNotifications();
-    initWebSocket();
+    _loadSettings().then((_) {
+      initWebSocket();
+    });
+  }
+
+  Future<void> _loadSettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _serverIP = prefs.getString('serverIP') ?? '192.168.100.191';
+      _serverPort = prefs.getString('serverPort') ?? '3000';
+    });
   }
 
   void initNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings(
-            'app_icon'); // küçük simge olarak kullanmak istediğiniz ikonu burada belirtin
+        AndroidInitializationSettings('app_icon'); // Ensure this icon exists
 
     final InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
@@ -45,13 +56,12 @@ class _HomePageState extends State<HomePage> {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'your_channel_id',
-      'your_channel_name',
+      'Akylly server otagy',
       channelDescription: 'your_channel_description',
       importance: Importance.max,
       priority: Priority.high,
       showWhen: false,
-      icon:
-          'app_icon', // smallIcon olarak kullanmak istediğiniz ikonu burada belirtin
+      icon: 'app_icon', // Ensure this icon exists
     );
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -80,7 +90,7 @@ class _HomePageState extends State<HomePage> {
 
   void connectWebSocket(String token) {
     channel = IOWebSocketChannel.connect(
-      'ws://192.168.100.191:3000/ws',
+      'ws://$_serverIP:$_serverPort/ws',
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -100,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           }
           if (parsedData['pir'] != pirStatus) {
             showNotification(
-                'Hereket Sensörü', 'Hareket Durumu: ${parsedData['pir']}');
+                'Hareket Sensörü', 'Hareket Durumu: ${parsedData['pir']}');
             pirStatus = parsedData['pir'];
           }
           tempStatus = parsedData['temp'];
@@ -144,7 +154,7 @@ class _HomePageState extends State<HomePage> {
       parsedData['temp'] = jsonData['temp'] ?? 'Bilinmiyor';
       parsedData['hum'] = jsonData['hum'] ?? 'Bilinmiyor';
     } catch (e) {
-      // print('Error parsing data: $e');
+      // Handle parsing error if needed
     }
 
     return parsedData;
