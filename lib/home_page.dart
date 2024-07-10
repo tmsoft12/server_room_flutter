@@ -13,11 +13,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late IOWebSocketChannel channel;
-  String? doorStatus = 'Yükleniyor';
-  String? fireStatus = 'Yükleniyor';
-  String? pirStatus = 'Yükleniyor';
-  String? tempStatus = 'Yükleniyor';
-  String? humStatus = 'Yükleniyor';
+  String? doorStatus = 'Ýüklenýär';
+  String? fireStatus = 'Ýüklenýär';
+  String? pirStatus = 'Ýüklenýär';
+  String? tempStatus = 'Ýüklenýär';
+  String? humStatus = 'Ýüklenýär';
   bool isConnected = false;
   String _serverIP = '192.168.100.191';
   String _serverPort = '3000';
@@ -55,9 +55,9 @@ class _HomePageState extends State<HomePage> {
   Future<void> showNotification(String title, String body) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'your_channel_id',
+      'tmsfot12',
       'Akylly server otagy',
-      channelDescription: 'your_channel_description',
+      channelDescription: 'bildirisleri sazla',
       importance: Importance.max,
       priority: Priority.high,
       showWhen: false,
@@ -99,18 +99,15 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           final parsedData = parseWebSocketData(data);
           if (parsedData['door'] != doorStatus) {
-            showNotification(
-                'Kapı Durumu', 'Kapı Durumu: ${parsedData['door']}');
+            showNotification('Gapy: ', '${parsedData['door']}');
             doorStatus = parsedData['door'];
           }
           if (parsedData['fire'] != fireStatus) {
-            showNotification(
-                'Yangın Durumu', 'Yangın Durumu: ${parsedData['fire']}');
+            showNotification('Yangyn: ', '${parsedData['fire']}');
             fireStatus = parsedData['fire'];
           }
           if (parsedData['pir'] != pirStatus) {
-            showNotification(
-                'Hareket Sensörü', 'Hareket Durumu: ${parsedData['pir']}');
+            showNotification('Hereket: ', '${parsedData['pir']}');
             pirStatus = parsedData['pir'];
           }
           tempStatus = parsedData['temp'];
@@ -148,11 +145,11 @@ class _HomePageState extends State<HomePage> {
 
     try {
       final jsonData = jsonDecode(data);
-      parsedData['door'] = jsonData['door'] ?? 'Bilinmiyor';
-      parsedData['fire'] = jsonData['fire'] ?? 'Bilinmiyor';
-      parsedData['pir'] = jsonData['pir'] ?? 'Bilinmiyor';
-      parsedData['temp'] = jsonData['temp'] ?? 'Bilinmiyor';
-      parsedData['hum'] = jsonData['hum'] ?? 'Bilinmiyor';
+      parsedData['door'] = jsonData['door'] ?? 'Bilinmeýär';
+      parsedData['fire'] = jsonData['fire'] ?? 'Bilinmeýär';
+      parsedData['pir'] = jsonData['pir'] ?? 'Bilinmeýär';
+      parsedData['temp'] = jsonData['temp'] ?? 'Bilinmeýär';
+      parsedData['hum'] = jsonData['hum'] ?? 'Bilinmeýär';
     } catch (e) {
       // Handle parsing error if needed
     }
@@ -170,7 +167,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ana Sayfa',
+        title: Text('Esasy Sahypa',
             style: TextStyle(color: Colors.grey[600], fontSize: 20)),
         actions: [
           IconButton(
@@ -209,31 +206,31 @@ class _HomePageState extends State<HomePage> {
               buildCard(
                 icon: Icons.thermostat,
                 iconColor: Color.fromARGB(255, 255, 0, 0),
-                title: 'Sıcaklık',
+                title: 'Tempratura',
                 status: tempStatus,
               ),
               buildCard(
                 icon: Icons.water_damage,
                 iconColor: Color.fromARGB(255, 0, 140, 255),
-                title: 'Nem',
+                title: 'Çyglylyk',
                 status: humStatus,
               ),
               buildCard(
                 icon: Icons.door_front_door,
                 iconColor: Color.fromARGB(202, 204, 153, 0),
-                title: 'Kapı',
+                title: 'Gapy',
                 status: doorStatus,
               ),
               buildCard(
                 icon: Icons.fire_extinguisher,
                 iconColor: Colors.red,
-                title: 'Yangın Sensörü',
+                title: 'Yangyn',
                 status: fireStatus,
               ),
               buildCard(
                 icon: Icons.sensors,
                 iconColor: Color.fromARGB(255, 0, 255, 4),
-                title: 'Hareket Sensörü',
+                title: 'Hereket',
                 status: pirStatus,
               ),
             ],
@@ -262,7 +259,7 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            'Durumu: $status',
+            'Ýagdaýy: $status',
             style: TextStyle(color: Colors.grey[600]),
           ),
         ),

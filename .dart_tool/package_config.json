@@ -392,13 +392,13 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "server_room",
+      "name": "serverroom",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-07-08T10:43:45.668580Z",
+  "generated": "2024-07-10T11:13:38.788694Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///usr/bin/flutter",
